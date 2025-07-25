@@ -1,4 +1,4 @@
-import { env } from "@/lib/env";
+import { env } from "@/lib/env/server";
 import { config } from "dotenv";
 import { defineConfig } from "drizzle-kit";
 
