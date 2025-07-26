@@ -7,6 +7,7 @@ import { Resend } from "resend";
 import { schema } from "@/db/schema";
 import ForgotPasswordEmail from "@/components/emails/reset-password";
 import VerifyEmail from "@/components/emails/verify-email";
+import { getActiveOrganization } from "@/server/organizations";
 
 const resend = new Resend(process.env.RESEND_API_KEY as string);
 
@@ -45,6 +46,21 @@ export const auth = betterAuth({
     cookieCache: {
       enabled: true,
       maxAge: 5 * 60,
+    },
+  },
+  databaseHooks: {
+    session: {
+      create: {
+        before: async (session) => {
+          const organization = await getActiveOrganization(session.userId);
+          return {
+            data: {
+              ...session,
+              activeOrganizationId: organization?.id,
+            },
+          };
+        },
+      },
     },
   },
   database: drizzleAdapter(db, {

@@ -1,5 +1,3 @@
-import { SignOutButton } from "@/components/sign-out-button";
-
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,17 +9,10 @@ import {
 } from "@/components/ui/dialog";
 
 import { CreateOrganizationForm } from "./components/create-organization-form";
-import { getOrganizations } from "@/server/organizations";
-import Link from "next/link";
-// import Link from "next/link";
 
 export default async function Dashboard() {
-  const organizations = await getOrganizations();
-
   return (
     <div className="flex flex-col gap-2 items-center justify-center h-screen">
-      <SignOutButton />
-
       <Dialog>
         <DialogTrigger asChild>
           <Button variant="outline">Create Organization</Button>
@@ -36,17 +27,6 @@ export default async function Dashboard() {
           <CreateOrganizationForm />
         </DialogContent>
       </Dialog>
-
-      <div className="flex flex-col gap-2">
-        <h2 className="text-2xl font-bold">Organizations</h2>
-        {organizations.map((organization) => (
-          <Button variant="outline" key={organization.id} asChild>
-            <Link href={`/dashboard/organization/${organization.slug}`}>
-              {organization.name}
-            </Link>
-          </Button>
-        ))}
-      </div>
     </div>
   );
 }
