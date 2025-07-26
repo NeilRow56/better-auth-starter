@@ -110,6 +110,12 @@ export const SignInForm = ({
                       </FormItem>
                     )}
                   />
+                  <Link
+                    href="/auth/forgot-password"
+                    className="ml-auto text-sm text-blue-600 underline-offset-4 hover:underline"
+                  >
+                    Forgot your password?
+                  </Link>
                 </div>
 
                 <Button type="submit" className="w-full" disabled={isPending}>
