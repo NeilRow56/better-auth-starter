@@ -71,7 +71,7 @@ export const SignUpForm = ({
       toast.success(
         `${message as string} Please check your email for verification.`
       );
-      router.push("/");
+      router.push("/dashboard");
     } else {
       toast.error(message as string);
     }

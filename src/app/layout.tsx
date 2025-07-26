@@ -48,8 +48,8 @@ export default function RootLayout({
             toastOptions={{
               unstyled: true,
               classNames: {
-                error: "text-red-600 bg-white border rounded-md p-2",
-                success: "text-green-700 bg-white border rounded-md p-2",
+                error: "text-red-600  border rounded-md p-2",
+                success: "border border-2 rounded-md p-2",
                 warning: "text-yellow-700 bg-white border rounded-md p-2",
                 info: "text-blue-700 bg-white border rounded-md p-2",
               },
