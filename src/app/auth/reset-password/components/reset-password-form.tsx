@@ -22,7 +22,7 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 
-import { authClient } from "@/lib/auth-client";
+import { resetPassword } from "@/lib/auth-client";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const formSchema = z.object({
@@ -58,7 +58,7 @@ export function ResetPasswordForm({
       return;
     }
 
-    const { error } = await authClient.resetPassword({
+    const { error } = await resetPassword({
       newPassword: values.password,
       token,
     });

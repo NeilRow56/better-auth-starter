@@ -1,10 +1,17 @@
 import { createAuthClient } from "better-auth/react";
-import { inferAdditionalFields } from "better-auth/client/plugins";
-import { auth } from "./auth";
+import { organizationClient } from "better-auth/client/plugins";
 
-export const authClient = createAuthClient({
+const authClient = createAuthClient({
   baseURL: process.env.BETTER_AUTH_URL,
-  plugins: [inferAdditionalFields<typeof auth>()],
+  plugins: [organizationClient()],
 });
 
-export const { signOut, useSession } = authClient;
+export const {
+  signIn,
+  signUp,
+  signOut,
+  useSession,
+  forgetPassword,
+  resetPassword,
+  organization,
+} = authClient;

@@ -44,9 +44,11 @@ export default function RootLayout({
         >
           {children}
           <Toaster
+            duration={5000}
             position="bottom-center"
             toastOptions={{
               unstyled: true,
+
               classNames: {
                 error: "text-red-600  border rounded-md p-2",
                 success: "border border-2 rounded-md p-2",
