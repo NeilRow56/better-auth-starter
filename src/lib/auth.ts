@@ -8,6 +8,7 @@ import { schema } from "@/db/schema";
 import ForgotPasswordEmail from "@/components/emails/reset-password";
 import VerifyEmail from "@/components/emails/verify-email";
 import { getActiveOrganization } from "@/server/organizations";
+import { ac, admin, member, owner } from "./auth/permissions";
 
 const resend = new Resend(process.env.RESEND_API_KEY as string);
 
@@ -71,5 +72,15 @@ export const auth = betterAuth({
       // session, user and verification table names already match the database names
     },
   }),
-  plugins: [organization(), nextCookies()],
+  plugins: [
+    organization({
+      ac,
+      roles: {
+        owner,
+        admin,
+        member,
+      },
+    }),
+    nextCookies(),
+  ],
 });

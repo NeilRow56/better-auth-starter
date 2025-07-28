@@ -1,4 +1,5 @@
-import { pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
+import { pgTable, text, timestamp, boolean, pgEnum } from "drizzle-orm/pg-core";
 
 export const UsersTable = pgTable("user", {
   id: text("id").primaryKey(),
@@ -15,6 +16,8 @@ export const UsersTable = pgTable("user", {
     .$defaultFn(() => /* @__PURE__ */ new Date())
     .notNull(),
 });
+
+export type User = typeof UsersTable.$inferSelect;
 
 export const session = pgTable("session", {
   id: text("id").primaryKey(),
@@ -70,7 +73,15 @@ export const organization = pgTable("organization", {
   metadata: text("metadata"),
 });
 
+export const organizationRelations = relations(organization, ({ many }) => ({
+  members: many(member),
+}));
+
 export type Organization = typeof organization.$inferSelect;
+
+export const role = pgEnum("role", ["member", "admin", "owner"]);
+
+export type Role = (typeof role.enumValues)[number];
 
 export const member = pgTable("member", {
   id: text("id").primaryKey(),
@@ -80,9 +91,24 @@ export const member = pgTable("member", {
   userId: text("user_id")
     .notNull()
     .references(() => UsersTable.id, { onDelete: "cascade" }),
-  role: text("role").default("member").notNull(),
+  role: role("role").default("member").notNull(),
   createdAt: timestamp("created_at").notNull(),
 });
+
+export const memberRelations = relations(member, ({ one }) => ({
+  organization: one(organization, {
+    fields: [member.organizationId],
+    references: [organization.id],
+  }),
+  user: one(UsersTable, {
+    fields: [member.userId],
+    references: [UsersTable.id],
+  }),
+}));
+
+export type Member = typeof member.$inferSelect & {
+  user: typeof UsersTable.$inferSelect;
+};
 
 export const invitation = pgTable("invitation", {
   id: text("id").primaryKey(),
@@ -106,4 +132,6 @@ export const schema = {
   organization,
   member,
   invitation,
+  organizationRelations,
+  memberRelations,
 };
